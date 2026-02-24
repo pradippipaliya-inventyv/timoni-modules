@@ -1,0 +1,22 @@
+values:
+  deploymentName: my-app-deployment-1
+  serviceName: my-app-service-2
+  serviceAccountName: my-app-sa-2
+  replicas: 3
+  image:
+    repository: docker.io/nginx
+    tag: latest
+    digest: ""
+    pullPolicy: IfNotPresent
+  service:
+    port: 80
+  message: Hello from Timoni!
+  env:
+    MY_ENV_VAR: my-value
+    ANOTHER_VAR: another-value
+  test:
+    enabled: false
+    image:
+      repository: docker.io/curlimages/curl
+      tag: latest
+      digest: ""
