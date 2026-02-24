@@ -3,6 +3,7 @@ package templates
 import (
 	corev1 "k8s.io/api/core/v1"
 	timoniv1 "timoni.sh/core/v1alpha1"
+	autoscalingv2 "k8s.io/api/autoscaling/v2"
 )
 
 // Config defines the schema and defaults for the Instance values.
@@ -82,23 +83,32 @@ import (
 	affinity?: corev1.#Affinity
 	topologySpreadConstraints?: [...corev1.#TopologySpreadConstraint]
 
-	// Test Job disabled by default.
-	test: {
-		enabled: *false | bool
-		image!:  timoniv1.#Image
-	}
-
-	// App settings.
-	message!: string
-
 	// Environment variables
 	env: *{} | {[string]: string}
 
-	// Add service and serviceAccount name fields
+	// Add service name fields
 	serviceName!: string
-	serviceAccountName!: string
 	// Add deploymentName field
 	deploymentName!: string
+
+	// HPA settings.
+	hpa?: {
+		enabled: *false | bool
+		maxReplicas!: int
+		minReplicas?: int
+		metrics?: [...autoscalingv2.#MetricSpec]
+		behavior?: autoscalingv2.#HorizontalPodAutoscalerBehavior
+		annotations?: {[string]: string}
+	}
+
+	// VirtualService settings.
+	virtualService?: {
+		enabled: *false | bool
+		name?: string
+		hosts: [...string]
+		gateways: [...string]
+		annotations?: {[string]: string}
+	}
 }
 
 // Instance takes the config values and outputs the Kubernetes objects.
@@ -106,17 +116,18 @@ import (
 	config: #Config
 
 	objects: {
-		sa: #ServiceAccount & {#config: config} & {metadata: name: config.serviceAccountName}
 		svc: #Service & {#config: config}
-		cm: #ConfigMap & {#config: config}
 
 		deploy: #Deployment & {
 			#config: config
-			#cmName: objects.cm.metadata.name
 		}
-	}
 
-	tests: {
-		"test-svc": #TestJob & {#config: config}
+		if config.hpa != _|_ if config.hpa.enabled {
+			hpa: #HorizontalPodAutoscaling & {_config: config}
+		}
+
+		if config.virtualService != _|_ if config.virtualService.enabled {
+			vs: #VirtualService & {#config: config}
+		}
 	}
 }

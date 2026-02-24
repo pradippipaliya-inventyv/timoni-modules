@@ -7,7 +7,6 @@ import (
 
 #Deployment: appsv1.#Deployment & {
 	#config:    #Config
-	#cmName:    string
 	apiVersion: "apps/v1"
 	kind:       "Deployment"
 	metadata: {
@@ -29,7 +28,6 @@ import (
 				}
 			}
 			spec: corev1.#PodSpec & {
-				serviceAccountName: #config.serviceAccountName
 				containers: [
 					{
 						name:            #config.metadata.name
@@ -54,44 +52,12 @@ import (
 								port: "http"
 							}
 						}
-						volumeMounts: [
-							{
-								mountPath: "/etc/nginx/conf.d"
-								name:      "config"
-							},
-							{
-								mountPath: "/usr/share/nginx/html"
-								name:      "html"
-							},
-						]
 						resources:       #config.resources
 						securityContext: #config.securityContext
 						if len(#config.env) > 0 {
 							env: [ for k, v in #config.env {
 								name:  k
 								value: v
-							}]
-						}
-					},
-				]
-				volumes: [
-					{
-						name: "config"
-						configMap: {
-							name: #cmName
-							items: [{
-								key:  "nginx.default.conf"
-								path: key
-							}]
-						}
-					},
-					{
-						name: "html"
-						configMap: {
-							name: #cmName
-							items: [{
-								key:  "index.html"
-								path: key
 							}]
 						}
 					},

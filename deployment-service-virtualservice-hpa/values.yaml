@@ -1,7 +1,6 @@
 values:
   deploymentName: my-app-deployment-1
   serviceName: my-app-service-2
-  serviceAccountName: my-app-sa-2
   replicas: 3
   image:
     repository: docker.io/nginx
@@ -10,13 +9,23 @@ values:
     pullPolicy: IfNotPresent
   service:
     port: 80
-  message: Hello from Timoni!
   env:
     MY_ENV_VAR: my-value
     ANOTHER_VAR: another-value
-  test:
-    enabled: false
-    image:
-      repository: docker.io/curlimages/curl
-      tag: latest
-      digest: ""
+  hpa:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 5
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 80
+  virtualService:
+    enabled: true
+    hosts:
+      - "test-app.example.com"
+    gateways:
+      - "istio-system/default-gateway"

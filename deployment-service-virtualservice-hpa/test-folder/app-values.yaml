@@ -1,9 +1,0 @@
-values:
-  deployment_name: "test-app"
-  service_name: "test-service"
-  image_tag: "v2.1.9"
-  replicas: 1
-  enable_deployment: true
-  enable_service: false
-  enable_configmap: false
-  enable_virtualservice: true
