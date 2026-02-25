@@ -1,0 +1,25 @@
+values:
+  deploymentName: my-app-deployment-dev
+  serviceName: my-app-service-dev
+  replicas: 1
+  image:
+    repository: docker.io/nginx
+    tag: dev
+    digest: ""
+    pullPolicy: IfNotPresent
+  service:
+    port: 8080
+  env:
+    MY_ENV_VAR: dev-value
+    ANOTHER_VAR: dev-another-value
+  hpa:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 2
+    metrics: []
+  virtualService:
+    enabled: true
+    hosts:
+      - "dev-app.example.com"
+    gateways:
+      - "istio-system/dev-gateway"
