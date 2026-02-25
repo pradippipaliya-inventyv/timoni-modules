@@ -4,7 +4,7 @@ values:
   replicas: 5
   image:
     repository: docker.io/nginx
-    tag: prod
+    tag: 1.29.5
     digest: ""
     pullPolicy: IfNotPresent
   service:
