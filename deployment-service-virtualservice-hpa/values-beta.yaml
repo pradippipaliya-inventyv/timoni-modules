@@ -4,7 +4,7 @@ values:
   replicas: 2
   image:
     repository: docker.io/nginx
-    tag: beta
+    tag: 1.29.5
     digest: ""
     pullPolicy: IfNotPresent
   service:
