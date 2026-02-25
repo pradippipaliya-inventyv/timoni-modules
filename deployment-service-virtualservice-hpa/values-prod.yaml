@@ -14,7 +14,7 @@ values:
     ANOTHER_VAR: prod-another-value
   hpa:
     enabled: true
-    minReplicas: 3
+    minReplicas: 1
     maxReplicas: 10
     metrics:
       - type: Resource
