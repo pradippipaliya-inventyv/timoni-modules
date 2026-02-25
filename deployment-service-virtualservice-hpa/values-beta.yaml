@@ -8,10 +8,9 @@ values:
     digest: ""
     pullPolicy: IfNotPresent
   service:
-    port: 8081
+    port: 808
   env:
-    MY_ENV_VAR: beta-value
-    ANOTHER_VAR: beta-another-value
+    MY_ENV_VAR: test-env-variable
   hpa:
     enabled: true
     minReplicas: 1
