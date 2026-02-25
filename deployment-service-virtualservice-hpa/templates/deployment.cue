@@ -40,18 +40,18 @@ import (
 								protocol:      "TCP"
 							},
 						]
-						livenessProbe: {
-							httpGet: {
-								path: "/healthz"
-								port: "http"
-							}
-						}
-						readinessProbe: {
-							httpGet: {
-								path: "/healthz"
-								port: "http"
-							}
-						}
+						// livenessProbe: {
+						// 	httpGet: {
+						// 		path: "/healthz"
+						// 		port: "http"
+						// 	}
+						// }
+						// readinessProbe: {
+						// 	httpGet: {
+						// 		path: "/healthz"
+						// 		port: "http"
+						// 	}
+						// }
 						resources:       #config.resources
 						securityContext: #config.securityContext
 						if len(#config.env) > 0 {
